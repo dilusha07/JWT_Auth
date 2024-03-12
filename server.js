@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const port = 3000;
@@ -18,4 +19,7 @@ const DB_URL = "mongodb+srv://Test1:Test1@cluster1.lshemxo.mongodb.net/TestAPP?r
 app.listen(port, () => {
     console.log(`Server is running on port:${port}`);
   });
+
+//routes
+app.use(authRoutes);
 
