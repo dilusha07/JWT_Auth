@@ -11,10 +11,11 @@
     "start": "nodemon server.js"
   },
   "name": "rest_jwt",
+  "type": "module",
   "version": "1.0.0",
   "main": "server.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "Node.js REST API with JWT Authentication"
 }
