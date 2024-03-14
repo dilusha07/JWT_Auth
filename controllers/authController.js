@@ -20,12 +20,23 @@ if(err.message.includes('user validation is failed!')){
 return errors;
 }
 
+// create json web token
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+  return jwt.sign({ id }, 'secret-key', {
+    expiresIn: maxAge
+  });
+};
+
+
 //controller actions
 module.exports.signup = async (req, res) =>{
     const {userName, password} = req.body;
     try {
         const user = await User.create({ userName, password });
-        res.status(201).json(user);
+        const token = createToken(user._id);
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.status(200).json({ user: user._id });
       }
       catch(err) {
         const errors = handleErrors(err);
@@ -33,8 +44,16 @@ module.exports.signup = async (req, res) =>{
       }
 }
 
-module.exports.login = (req, res) =>{
+module.exports.login = async(req, res) =>{
     const {userName, password} = req.body;
-    console.log(userName, password);
-    res.send('user login');
+  try {
+    const user = await User.login(userName, password);
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({ user: user._id });
+  } 
+  catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
 }
