@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
+const cookieParser = require("cookie-parser");
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser);
+
 const port = 3000;
 
 
@@ -23,4 +26,16 @@ app.listen(port, () => {
 
 //routes
 app.use(authRoutes);
+
+//cookies
+app.get('/set-cookies', (req, res)=>{
+  res.cookie('newUser', false);
+  res.cookie('isUser', true, {maxTime: 1000*60*60*24, httpOnly:true});
+  res.send('you got the cookies');
+});
+
+app.get('/read-cookie', (req, res)=>{
+  console.log(cookies);
+  res.json(cookies);
+})
 
