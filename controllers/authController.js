@@ -19,6 +19,7 @@ if(err.message.includes('user validation is failed!')){
 }
 return errors;
 }
+
 //controller actions
 module.exports.signup = async (req, res) =>{
     const {userName, password} = req.body;
@@ -27,6 +28,7 @@ module.exports.signup = async (req, res) =>{
         res.status(201).json(user);
       }
       catch(err) {
+        const errors = handleErrors(err);
         res.status(400).json({errors});
       }
 }
