@@ -5,6 +5,16 @@ const handleErrors = (err) =>{
   console.log(err.message, err.code);
   let errors = {userName:'', password:''};
 
+  //incorrect user name
+  if(err.message === "Incorrect user name"){
+    errors.userName = 'That user name is not registered';
+  }
+
+   //incorrect password
+   if(err.message === "Incorrect password"){
+    errors.password = 'That password is not registered';
+  }
+
   //duplicate user name error
   if(err.code === 11000){
       errors.userName = 'that user name is already registered';
@@ -23,7 +33,7 @@ return errors;
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
-  return jwt.sign({ id }, 'secret-key', {
+  return jwt.sign({ id }, 'secrect-key', {
     expiresIn: maxAge
   });
 };
